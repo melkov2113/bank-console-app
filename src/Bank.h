@@ -1,23 +1,26 @@
 #pragma once
 #include <vector>
+#include <string>
 #include "Account.h"
 
 class Bank {
-public:
+private:
+    // Хранилище всех аккаунтов. Приватное, чтобы защитить данные.
     std::vector<Account> accounts;
 
-    // ����� ��� �������� ��������
-    void createAccount(int id, std::string name, double initial) {
-        accounts.emplace_back(id, name, initial);
-    }
+public:
+    // Метод создания нового аккаунта
+    void createAccount(int id, std::string name, double initialBalance);
 
-    // ����� ��� ������ �������� �� ID (���������� ���������)
-    Account* getAccount(int id) {
-        for (auto& acc : accounts) {
-            if (acc.getId() == id) {
-                return &acc;
-            }
-        }
-        return nullptr; // ���� �� ������
-    }
+    // Метод поиска аккаунта по ID.
+    // Возвращает указатель (Account*), чтобы мы могли менять найденный объект.
+    // Если не найден — вернет nullptr.
+    Account* findAccountById(int id);
+
+    // Перевод денег между счетами
+    bool transferMoney(int fromId, int toId, double amount);
+
+    // Вспомогательный метод: получить весь список (понадобится для сохранения в файл)
+    // const и & означают, что мы даем посмотреть, но не копируем и не даем менять список
+    const std::vector<Account>& getAccounts() const;
 };
